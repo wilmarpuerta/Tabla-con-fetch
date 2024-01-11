@@ -1,5 +1,5 @@
 const tabla = document.createElement("table");
-tabla.classList.add("table", "table-striped", "table-hover");
+tabla.classList.add("table", "table-dark", "table-striped", "table-hover");
 const encabezados = ["Id", "Nombre", "Email", "Accion"];
 const encabezadoRow = document.createElement("tr");
 encabezadoRow.classList.add("encabezados");
@@ -13,6 +13,11 @@ tabla.appendChild(encabezadoRow);
 
 const root = document.getElementById("root");
 root.appendChild(tabla);
+
+// Tbody
+const tbody = document.createElement("tbody");
+tabla.appendChild(tbody);
+
 
 const result = fetch("https://memin.io/public/api/users")
     .then(result => {
@@ -45,7 +50,7 @@ const result = fetch("https://memin.io/public/api/users")
             eliminarCell.append(remove);
 
             // Agregar la fila a la tabla
-            tabla.appendChild(fila);
+            tbody.appendChild(fila);
 
         });
 
