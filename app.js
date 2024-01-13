@@ -42,16 +42,96 @@ const result = fetch("https://memin.io/public/api/users")
             fila.appendChild(emailCell);
 
             // Boton de eliminar
-            const eliminarCell = document.createElement("td");
+            const actionCell = document.createElement("td");
             const remove = document.createElement("button");
-            remove.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24"><path fill="#ffffff" d="M7 21q-.825 0-1.413-.588T5 19V6H4V4h5V3h6v1h5v2h-1v13q0 .825-.588 1.413T17 21H7Zm2-4h2V8H9v9Zm4 0h2V8h-2v9Z"/></svg>`;
+            remove.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="#ffffff" d="M7 21q-.825 0-1.413-.588T5 19V6H4V4h5V3h6v1h5v2h-1v13q0 .825-.588 1.413T17 21H7Zm2-4h2V8H9v9Zm4 0h2V8h-2v9Z"/></svg>`;
             remove.style = "background-color: rgba(255, 0, 0, 0.749); border-radius: 5px; border: none; padding: 5px;";
-            fila.appendChild(eliminarCell);
-            eliminarCell.append(remove);
+            remove.setAttribute("onclick", "deleteDato(this)");
+            fila.appendChild(actionCell);
+            actionCell.append(remove);
+
+            // Boton de ver detalles
+            const detalles = document.createElement("button");
+            detalles.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="#ffffff" d="M12 9a3 3 0 0 0-3 3a3 3 0 0 0 3 3a3 3 0 0 0 3-3a3 3 0 0 0-3-3m0 8a5 5 0 0 1-5-5a5 5 0 0 1 5-5a5 5 0 0 1 5 5a5 5 0 0 1-5 5m0-12.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5"/></svg>`;
+            detalles.style = "background-color: green; border-radius: 5px; border: none; padding: 5px;";
+            detalles.setAttribute("onclick", "deleteDato(this)");
+            fila.appendChild(actionCell);
+            actionCell.append(detalles);
+
+            // Boton de actualizar
+            const actualizar = document.createElement("button");
+            actualizar.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 48 48"><g fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"><path d="M24 44c11.046 0 20-8.954 20-20S35.046 4 24 4S4 12.954 4 24s8.954 20 20 20"/><path d="M33.542 27c-1.274 4.057-5.064 7-9.542 7c-4.477 0-8.268-2.943-9.542-7v6m19.084-18v6c-1.274-4.057-5.064-7-9.542-7c-4.477 0-8.268 2.943-9.542 7"/></g></svg>`;
+            actualizar.style = "background-color: blue; border-radius: 5px; border: none; padding: 5px;";
+            actualizar.setAttribute("onclick", "update()");
+            fila.appendChild(actionCell);
+            actionCell.append(actualizar);
 
             // Agregar la fila a la tabla
             tbody.appendChild(fila);
 
         });
-
     });
+
+// Funcion de eliminar registro
+
+function deleteDato(element) {
+    const elementoPadre = (element.parentElement).parentElement;
+    const id = elementoPadre.children[0].textContent;
+
+    tbody.removeChild(elementoPadre);
+
+    fetch(`https://memin.io/public/api/users/${id}`, {
+        method: 'DELETE',
+        headers: {
+            "Content-type": "aplication/json"
+        }
+    })
+        .then(reponse => {
+            return reponse.json()
+        });
+};
+
+// Función del boton actualizar
+
+function update() {
+    const inputNombre = document.getElementById("nameUser");
+    const inputEmail = document.getElementById("emailUser");
+    const btn = document.getElementById("btn-formulario");
+    btn.removeEventListener("click", crearRegistro);
+    btn.setAttribute("onclick", "updateRegister()");
+    btn.textContent = "Actualizar Registro";
+
+    inputNombre.value = nombre;
+    inputEmail.value = email;
+};
+
+// Función de actualizar registro
+
+function updateRegister(element) {
+    const elementoPadre = (element.parentElement).parentElement;
+    const id = elementoPadre.children[0].textContent;
+    const nombre = elementoPadre.children[1].textContent;
+    const email = elementoPadre.children[2].textContent;
+
+}
+
+
+// Función de crear registro
+
+function crearRegistro() {
+    const inputNombre = document.getElementById("nameUser");
+    const inputEmail = document.getElementById("emailUser");
+
+    inputNombre.value;
+    inputEmail.value;
+
+    fetch(`https://memin.io/public/api/users`, {
+        method: 'POST',
+        headers: {
+            "Content-type": "aplication/json"
+        }
+    })
+        .then(reponse => {
+            return reponse.json()
+        });
+}

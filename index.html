@@ -16,17 +16,20 @@
 <body class="p-3 mb-2 bg-dark text-white">
     <div class="container">
         <div class="row">
-            <div class="col-md-4">
-                <div class="mb-3 border border-secondary"
-                    style="margin-top: 10%; width: 300px; padding: 10px; border-radius: 10px;">
+            <div class="col-md-3">
+                <div class="mb-3 border border-secondary" style="margin-top: 10%; padding: 10px; border-radius: 10px;">
                     <label for="exampleFormControlInput1" class="form-label">Name</label>
-                    <input type="email" class="form-control" id="exampleFormControlInput1">
+                    <input type="email" class="form-control" id="nameUser">
                     <label for="exampleFormControlInput1" class="form-label">Email address</label>
-                    <input type="email" class="form-control" id="exampleFormControlInput1"
-                        placeholder="name@example.com">
+                    <input type="email" class="form-control" id="emailUser" placeholder="name@example.com">
+                    <div class="col text-center" style="margin: 20px 0 5px 0;">
+                        <button id="btn-formulario" type="button" class="btn btn-primary btn-lg "
+                            onclick="crearRegistro()">Crear
+                            Registro</button>
+                    </div>
                 </div>
             </div>
-            <div class="col-md-8">
+            <div class="col-md-9">
                 <div id="root"></div>
             </div>
         </div>
