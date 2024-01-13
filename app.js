@@ -3,6 +3,9 @@ tabla.classList.add("table", "table-dark", "table-striped", "table-hover");
 const encabezados = ["Id", "Nombre", "Email", "Accion"];
 const encabezadoRow = document.createElement("tr");
 encabezadoRow.classList.add("encabezados");
+const inputNombre = document.getElementById("nameUser");
+const inputEmail = document.getElementById("emailUser");
+const btn = document.getElementById("btn-formulario");
 
 encabezados.forEach(encabezado => {
     const th = document.createElement("th");
@@ -62,7 +65,7 @@ const result = fetch("https://memin.io/public/api/users")
             const actualizar = document.createElement("button");
             actualizar.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 48 48"><g fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"><path d="M24 44c11.046 0 20-8.954 20-20S35.046 4 24 4S4 12.954 4 24s8.954 20 20 20"/><path d="M33.542 27c-1.274 4.057-5.064 7-9.542 7c-4.477 0-8.268-2.943-9.542-7v6m19.084-18v6c-1.274-4.057-5.064-7-9.542-7c-4.477 0-8.268 2.943-9.542 7"/></g></svg>`;
             actualizar.style = "background-color: blue; border-radius: 5px; border: none; padding: 5px;";
-            actualizar.setAttribute("onclick", "update()");
+            actualizar.setAttribute("onclick", "update(this)");
             fila.appendChild(actionCell);
             actionCell.append(actualizar);
 
@@ -93,10 +96,13 @@ function deleteDato(element) {
 
 // Función del boton actualizar
 
-function update() {
-    const inputNombre = document.getElementById("nameUser");
-    const inputEmail = document.getElementById("emailUser");
-    const btn = document.getElementById("btn-formulario");
+let id;
+
+function update(element) {
+    const elementoPadre = (element.parentElement).parentElement;
+    id = elementoPadre.children[0].textContent;
+    const nombre = elementoPadre.children[1].textContent;
+    const email = elementoPadre.children[2].textContent;
     btn.removeEventListener("click", crearRegistro);
     btn.setAttribute("onclick", "updateRegister()");
     btn.textContent = "Actualizar Registro";
@@ -107,31 +113,47 @@ function update() {
 
 // Función de actualizar registro
 
-function updateRegister(element) {
-    const elementoPadre = (element.parentElement).parentElement;
-    const id = elementoPadre.children[0].textContent;
-    const nombre = elementoPadre.children[1].textContent;
-    const email = elementoPadre.children[2].textContent;
+function updateRegister() {
+    userName = inputNombre.value;
+    userEmail = inputEmail.value;
 
-}
+    fetch(`https://memin.io/public/api/users/${id}`, {
+        method: 'PUT',
+        headers: {
+            "Content-type": "aplication/json"
+        },
+        body: JSON.stringify({ name: userName, email: userEmail }),
+    })
+        .then(reponse => {
+            return reponse.json()
+        }).then(data => {
+            console.log(data)
+        });
+
+    inputNombre.value = "";
+    inputEmail.value = "";
+};
 
 
 // Función de crear registro
 
 function crearRegistro() {
-    const inputNombre = document.getElementById("nameUser");
-    const inputEmail = document.getElementById("emailUser");
-
-    inputNombre.value;
-    inputEmail.value;
+    userName = inputNombre.value;
+    userEmail = inputEmail.value;
 
     fetch(`https://memin.io/public/api/users`, {
         method: 'POST',
         headers: {
             "Content-type": "aplication/json"
-        }
+        },
+        body: JSON.stringify({ name: userName, email: userEmail }),
     })
         .then(reponse => {
             return reponse.json()
+        }).then(data => {
+            console.log(data)
         });
+
+    inputNombre.value = "";
+    inputEmail.value = "";
 }
