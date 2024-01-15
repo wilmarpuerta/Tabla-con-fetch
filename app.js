@@ -6,6 +6,7 @@ encabezadoRow.classList.add("encabezados");
 const inputNombre = document.getElementById("nameUser");
 const inputEmail = document.getElementById("emailUser");
 const btn = document.getElementById("btn-formulario");
+const modalBody = document.querySelector('.modal-body');
 
 encabezados.forEach(encabezado => {
     const th = document.createElement("th");
@@ -57,7 +58,9 @@ const result = fetch("https://memin.io/public/api/users")
             const detalles = document.createElement("button");
             detalles.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="#ffffff" d="M12 9a3 3 0 0 0-3 3a3 3 0 0 0 3 3a3 3 0 0 0 3-3a3 3 0 0 0-3-3m0 8a5 5 0 0 1-5-5a5 5 0 0 1 5-5a5 5 0 0 1 5 5a5 5 0 0 1-5 5m0-12.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5"/></svg>`;
             detalles.style = "background-color: green; border-radius: 5px; border: none; padding: 5px;";
-            detalles.setAttribute("onclick", "deleteDato(this)");
+            detalles.setAttribute("data-bs-toggle", "modal");
+            detalles.setAttribute("data-bs-target", "#Modal")
+            detalles.setAttribute("onclick", "verDetalles(this)");
             fila.appendChild(actionCell);
             actionCell.append(detalles);
 
@@ -109,6 +112,12 @@ function update(element) {
 
     inputNombre.value = nombre;
     inputEmail.value = email;
+
+    // Desplazamiendo al inicio de la pagina
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
 };
 
 // Función de actualizar registro
@@ -132,6 +141,18 @@ function updateRegister() {
 
     inputNombre.value = "";
     inputEmail.value = "";
+
+    btn.removeEventListener("click", updateRegister);
+    btn.setAttribute("onclick", "crearRegistro()");
+    btn.textContent = "Crear Registro";
+
+    // Recarga de pagina
+    function recargarPagina() {
+        location.reload();
+    }
+
+    const tiempoEspera = 1200;
+    setTimeout(recargarPagina, tiempoEspera);
 };
 
 
@@ -156,4 +177,32 @@ function crearRegistro() {
 
     inputNombre.value = "";
     inputEmail.value = "";
+
+    // Recarga de pagina
+    function recargarPagina() {
+        location.reload();
+    }
+
+    const tiempoEspera = 1200;
+    setTimeout(recargarPagina, tiempoEspera);
+};
+
+// Función de ver detalles
+
+function verDetalles(element) {
+    const elementoPadre = (element.parentElement).parentElement;
+    const userid = elementoPadre.children[0].textContent;
+
+    fetch(`https://memin.io/public/api/users/${userid}`)
+        .then(reponse => {
+            return reponse.json()
+        }).then(data => {
+            modalBody.innerHTML = `
+                <h5>ID: ${data.id}</h5>
+                <p>Nombre: ${data.name}</p>
+                <p>Email: ${data.email}</p>
+                <p>Password: ${data.password}</p>
+                <p>Last update: ${data.updated_at}</p>
+                <p>Created at: ${data.created_at}</p>`
+        });
 }
