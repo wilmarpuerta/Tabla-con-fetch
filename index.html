@@ -11,6 +11,11 @@
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
     <script src="./app.js" defer></script>
+    <style>
+        .filtro {
+            display: none;
+        }
+    </style>
 </head>
 
 <body class="p-3 mb-2 bg-dark text-white">
@@ -30,8 +35,9 @@
                 </div>
             </div>
             <div class="col-md-9">
-                <input class="form-control form-control-lg" type="text" placeholder="Buscador"
-                    aria-label=".form-control-lg example">
+                <input id="searchInput" class="form-control form-control-lg" type="text"
+                    placeholder="Ingrese su búsqueda" aria-label=".form-control-lg example"
+                    style=" margin-bottom: 15px;">
                 <div id="root"></div>
             </div>
         </div>

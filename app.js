@@ -29,6 +29,7 @@ const result = fetch("https://memin.io/public/api/users")
     }).then(data => {
         data.forEach(function (element) {
             const fila = document.createElement("tr");
+            fila.classList.add("usuario");
 
             // Celda del nombre
             const idCell = document.createElement("td");
@@ -205,4 +206,26 @@ function verDetalles(element) {
                 <p>Last update: ${data.updated_at}</p>
                 <p>Created at: ${data.created_at}</p>`
         });
-}
+};
+
+// Función de buscar
+
+document.addEventListener('keyup', e => {
+    if (e.target.matches('#searchInput')) {
+        document.querySelectorAll('.usuario').forEach(user => {
+            user.textContent.toLowerCase().includes(e.target.value)
+                ? user.classList.remove('filtro')
+                : user.classList.add('filtro');
+        })
+    }
+});
+
+// Función de recargar la pagina
+
+document.addEventListener('keydown', (e) => {
+    if (e.ctrlKey) {
+        if (e.key == "x" || e.key == "X") {
+            location.reload();
+        }
+    }
+}, false);
