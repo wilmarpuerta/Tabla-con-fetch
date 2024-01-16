@@ -214,8 +214,8 @@ document.addEventListener('keyup', e => {
     if (e.target.matches('#searchInput')) {
         document.querySelectorAll('.usuario').forEach(user => {
             user.textContent.toLowerCase().includes(e.target.value)
-                ? user.classList.remove('filtro')
-                : user.classList.add('filtro');
+                ? user.style = "display: table-row;"
+                : user.style = "display: none;"
         })
     }
 });
